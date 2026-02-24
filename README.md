@@ -7,7 +7,7 @@ Official PyTorch implementation of
 
 ## 📌 **1. New Zero-Shot Hashing Benchmark**
 
-We propose a zero-shot hashing benchmark  for image retrieval built upon **ImageNet-CoG**.
+🎉We propose a zero-shot hashing benchmark  for image retrieval built upon **ImageNet-CoG**.
 
 ### Dataset
 
@@ -43,8 +43,18 @@ https://github.com/haotian-liu/LLaVA#install
 
 #### **Step 2: Generate hierarchical text**
 
+Run the following script to generate the text.
+
+For more details, please refer to https://github.com/Nan-ltl/Hierarchical-text-generation
+
 ```bash
-python xxx_generate_text.py --input_dir <imagenet_path> --output_dir <text_output>
+python Generate_text_by_llava.py --data_list_path "your path" --output_json "your json file path" --output_error_json "your json file path to record the error images" --data_path "path to dataset" --cache_dir "pretrained model weigths of llava"
+```
+
+Example image-text pairs after generating text.
+
+```text
+"/n01440764/n01440764_10290.JPEG": "Animal.=>Fish.=>Large fish with blue and yellow pattern.=>The image shows a man holding a large fish with a blue and yellow pattern on its body. He is wearing a white cap, a gray shirt, and blue pants. The man is standing on a dirt path surrounded by green plants and a blue umbrella."
 ```
 
 ------
@@ -61,9 +71,13 @@ Repo: https://github.com/TAU-VAILab/hierarcaps
 Download CLIP-B weights from:
 https://drive.google.com/drive/folders/1s-f2L0pFzZXs2jCaIyfMa207iiNYkua3
 
-#### Step 2: Run Training Script
+#### Step 2: Environment setup
 
-We train on **8 × NVIDIA RTX 3090 (24GB)** GPUs.
+Please refer to official DINOv2 👉https://github.com/facebookresearch/dinov2
+
+#### Step 3: Run Training Script
+
+We train on **8 × NVIDIA RTX 3090 (24GB)** GPUs. The checkpoints will be saved automatically.
 
 ```bash
 torchrun --nproc_per_node=8 train.py --output-dir <path to output dir>
@@ -75,7 +89,11 @@ torchrun --nproc_per_node=8 train.py --output-dir <path to output dir>
 
 ### **3.1 Dataset Preparation**
 
-- **Level 0**: Use the official ImageNet-1K validation set
+- **Level 0**: Use the official ImageNet-1K validation set.
+
+  ```
+  ./imagenet-cog/cog_val_level0.txt
+  ```
 
 - **Level 1–5**: We extract the validation paths and labels following the official ImageNet-CoG mapping and split files.
 
@@ -105,8 +123,10 @@ n01322508/n01322508_5478.JPEG 0
 
 We use the following script to calculate **mAP@all** for each level (0–5).
 
+You can download our pretrained weights here. 👉 https://drive.google.com/drive/folders/12aGY8YYL17ksKq2PnJskTEZmnF_QiUmH?usp=sharing
+
 ```bash
-python evaluate.py --checkpoint <ckpt_path>
+python evaluate.py
 ```
 
 ------
@@ -116,8 +136,16 @@ python evaluate.py --checkpoint <ckpt_path>
 If you find this work useful, please cite:
 
 ```bibtex
-@article{
-}
+@ARTICLE{11339951,
+  author={Qiao, Shishi and Yuan, Shuai and Chen, Miaonan and Zheng, Haiyong},
+  journal={IEEE Transactions on Circuits and Systems for Video Technology}, 
+  title={Hierarchical Text-guided Hashing for Open-world Image Retrieval}, 
+  year={2026},
+  volume={},
+  number={},
+  pages={1-1},
+  doi={10.1109/TCSVT.2026.3651707}}
+
 ```
 
 ------
